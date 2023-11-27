@@ -24,9 +24,38 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
+    const studentCollection = client.db("studentDb").collection("teacher");
+    const userCollection = client.db("studentDb").collection("users");
+    const classCollection = client.db("studentDb").collection("class");
 
 
+    // class related api
+    app.post('/class', async(req, res) =>{
+      const userData = req.body;
+      const result = await classCollection.insertOne(userData);
+      res.send(result)
+    })
+    
+    // user related api
+    app.post('/users', async(req, res) =>{
+      const userData = req.body;
+      const result = await userCollection.insertOne(userData);
+      res.send(result)
+    })
+    app.get('/users/:email', async(req, res) => {
+      const email= req.params.email;
+      const query={email:email};
+      const result = await userCollection.findOne(query);
+      res.send(result);
+    });
+    
+    // teacher related api
+    app.post('/teacher', async(req, res) =>{
+      const teacherData = req.body;
+      const result = await studentCollection.insertOne(teacherData);
+      res.send(result)
+    })
 
 
     // Send a ping to confirm a successful connection
