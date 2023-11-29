@@ -137,6 +137,17 @@ app.get('/class', async (req, res) => {
       res.send(result);
     })
 
+    app.patch('/users/admin/:id', async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const updatedDoc = {
+        $set: {
+          role: 'admin'
+        }
+      }
+      const result = await userCollection.updateOne(filter, updatedDoc);
+      res.send(result);
+    })
 
     // teacher related api
     app.post('/teacher', async(req, res) =>{
@@ -144,6 +155,11 @@ app.get('/class', async (req, res) => {
       const result = await studentCollection.insertOne(teacherData);
       res.send(result)
     })
+
+    app.get('/teacher', async(req, res) => {
+      const result = await studentCollection.find().toArray();
+      res.send(result);
+    });
 
 
     // Send a ping to confirm a successful connection
