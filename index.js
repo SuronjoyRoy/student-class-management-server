@@ -96,6 +96,15 @@ app.get('/class', async (req, res) => {
   res.send(result);
 });
 
+app.get('/class-single/:id', async (req, res) => {
+  const id = req.params.id;
+    const query = {_id: new ObjectId(id)};
+  const result = await classCollection.findOne(query);
+  res.send(result);
+});
+
+
+
     // user related api
     app.post('/users', async(req, res) =>{
       const userData = req.body;
@@ -160,6 +169,24 @@ app.get('/class', async (req, res) => {
       const result = await studentCollection.find().toArray();
       res.send(result);
     });
+
+    app.delete('/teacher/:id', async(req, res)=>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await studentCollection.deleteOne(query);
+      res.send(result);
+  })
+    app.patch('/apporove-single/:email', async(req, res)=>{
+      const email = req.params.email;
+      const query = {email: email};
+      console.log('user to teacher email', email);
+      const updatedDoc = {
+        $set:{
+          role:'teacher',
+        }}
+      const result = await userCollection.updateOne(query,updatedDoc);
+      res.send(result);
+  })
 
 
     // Send a ping to confirm a successful connection
