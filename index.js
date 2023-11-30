@@ -118,6 +118,13 @@ app.get('/class-single/:id', async (req, res) => {
       res.send(result);
     });
 
+    app.get('/users-profile/:email', async(req, res) => {
+      const email= req.params.email;
+      const query={email:email};
+      const result = await userCollection.findOne(query);
+      res.send(result);
+    });
+
     app.get('/users', async(req, res) => {
       const result = await userCollection.find().toArray();
       res.send(result);
@@ -169,6 +176,10 @@ app.get('/class-single/:id', async (req, res) => {
       const result = await studentCollection.find().toArray();
       res.send(result);
     });
+    app.get('/all-class-show', async(req, res) => {
+      const result = await classCollection.find().toArray();
+      res.send(result);
+    });
 
     app.delete('/teacher/:id', async(req, res)=>{
       const id = req.params.id;
@@ -190,8 +201,8 @@ app.get('/class-single/:id', async (req, res) => {
 
 
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    // await client.db("admin").command({ ping: 1 });
+    // console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
